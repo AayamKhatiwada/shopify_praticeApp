@@ -1,0 +1,27 @@
+{
+  "name": "my-app",
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "scripts": {
+    "shopify": "shopify",
+    "build": "shopify app build",
+    "dev": "shopify app dev",
+    "push": "shopify app push",
+    "generate": "shopify app generate",
+    "deploy": "shopify app deploy",
+    "info": "shopify app info"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.7.1",
+    "@shopify/app": "^3.22.1",
+    "@shopify/cli": "^3.22.1",
+    "@shopify/shopify-api": "^5.2.0",
+    "graphql": "^16.6.0",
+    "noty": "^3.2.0-beta-deprecated"
+  },
+  "author": "aayam",
+  "devDependencies": {
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
+  }
+}
