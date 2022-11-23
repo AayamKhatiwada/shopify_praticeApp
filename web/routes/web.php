@@ -434,6 +434,40 @@ Route::post('/api/editProduct', function (Request $request) {
     // return ["response" => $request->compareTax];
 })->middleware('shopify.auth');
 
+Route::post('/api/addImage', function (Request $request) {
+
+    $session = $request->get('shopifySession');
+
+    $queryString = <<<'QUERY'
+    mutation productAppendImages($input: ProductAppendImagesInput!) {
+        productAppendImages(input: $input) {
+            product {
+                id
+            }
+        }
+    }
+    QUERY;
+
+    $client = new Graphql($session->getShop(), $session->getAccessToken());
+
+    $products = $client->query(
+        [
+            "query" => $queryString,
+            "variables" => [
+                "input" => [
+                    "id" => $request->gid,
+                    "images" => [
+                        [
+                            "src" => $request->imageUrl
+                        ]
+                    ]
+                ]
+            ]
+        ],
+    );
+
+    return response($products->getBody());
+})->middleware('shopify.auth');
 
 // mutation to add a products
 

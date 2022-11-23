@@ -57,7 +57,30 @@ const ProductsDetails = () => {
     const [barCode, setBarCode] = useState('')
     const handleBarCode = useCallback((value) => setBarCode(value), []);
 
+    const [imageModel, setImageModel] = useState(false);
+    const handleImageModel = useCallback(() => setImageModel((value) => !value), []);
+
+    const [imageUrl, setImageUrl] = useState('');
+    const handleImageUrl = useCallback((value) => setImageUrl(value), []);
+
     const [images, setImages] = useState([])
+
+    const [trueImage, setTrueImage] = useState(true)
+
+    async function checkImage(url) {
+
+        const res = await fetch(url);
+        const buff = await res.blob();
+
+        const result = buff.type.startsWith('image/')
+        setTrueImage(result)
+    }
+
+    if (imageUrl !== '') {
+        checkImage(imageUrl)
+    }
+
+    const errorMessage = !trueImage ? 'Invalid image url' : '';
 
     const { data, refetch } = useAppQuery({
         url: `/api/getProducts/${slugPara}`,
@@ -199,6 +222,29 @@ const ProductsDetails = () => {
         setactive(true)
     }
 
+    const addImage = async () => {
+        if (imageUrl !== '') {
+            
+            handleImageModel()
+            let data = { gid, imageUrl };
+            const sessionToken = await getSessionToken(app);
+            let result = await fetch(`https://${window.location.host}/api/addImage`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + sessionToken,
+                },
+                body: JSON.stringify(data)
+            });
+            await result.json();
+
+            refetch()
+            setactive(true)
+            setImageUrl('')
+        }
+    }
+
     const options = [
         { label: 'Active', value: 'ACTIVE' },
         { label: 'Draft', value: 'DRAFT' },
@@ -259,6 +305,31 @@ const ProductsDetails = () => {
         />
     );
 
+    const model = (
+        <Modal
+            open={imageModel}
+            onClose={handleImageModel}
+            title="Insert Image URL"
+
+            primaryAction={{
+                content: 'Add Image',
+                onAction: addImage,
+                disabled: !trueImage
+            }}
+        >
+            <Modal.Section>
+                <TextField
+                    value={imageUrl}
+                    onChange={handleImageUrl}
+                    type="url"
+                    autoComplete="off"
+                    placeholder="https://"
+                    error={errorMessage}
+                />
+            </Modal.Section>
+        </Modal >
+    );
+
     const toastMarkup = active ? (
         <Toast content="Product Updated" onDismiss={() => setactive(false)} />
     ) : null;
@@ -281,6 +352,7 @@ const ProductsDetails = () => {
                             {resourcePicker}
                             {contextualSaveBar}
                             {toastMarkup}
+                            {model}
                             <Title name="Product Details" />
                             <div style={{ height: '250px', width: '100%' }}>
                                 {fullscreenBarMarkup}
@@ -308,12 +380,12 @@ const ProductsDetails = () => {
                                             </Card>
                                             <Card sectioned title="Media">
                                                 <Stack vertical alignment="center">
-                                                    <Button>Insert Image</Button>
-                                                    <Stack>
+                                                    <Button onClick={handleImageModel}>Insert Image</Button>
+                                                    <Stack vertical>
                                                         {
                                                             images.map((image) => {
                                                                 return (
-                                                                    <img src={image.node.url} alt="random" width={"300px"} />
+                                                                    <img src={image.node.url} alt="random" width={"300px"} height={"250px"} style={{ objectfit: "contain" }}/>
                                                                 );
                                                             })
                                                         }

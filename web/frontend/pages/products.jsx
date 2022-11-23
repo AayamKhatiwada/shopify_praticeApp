@@ -273,9 +273,9 @@ export default function Products() {
                     <Card.Section>
                       <img
                         alt=""
-                        width="100%"
+                        width="300px"
                         height="200px"
-                        style={{ objectFit: 'cover', objectPosition: 'center' }}
+                        style={{ objectFit: 'contain', objectPosition: 'center' }}
                         src={data.images[0] != null ? data.images[0].src : 'https://www.namepros.com/attachments/empty-png.89209/'} />
 
                       {data.body_html ? (
