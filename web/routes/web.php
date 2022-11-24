@@ -163,6 +163,24 @@ Route::get('/api/orders', function (Request $request) {
     return response($result->getDecodedBody());
 })->middleware('shopify.auth');
 
+Route::get('/api/custom_collections', function (Request $request) {
+    $session = $request->get('shopifySession');
+
+    $client = new Rest($session->getShop(), $session->getAccessToken());
+    $result = $client->get('custom_collections');
+
+    return response($result->getDecodedBody());
+})->middleware('shopify.auth');
+
+Route::get('/api/getProductCollection/{slug}', function ($slug, Request $request) {
+    $session = $request->get('shopifySession');
+
+    $client = new Rest($session->getShop(), $session->getAccessToken());
+    $result = $client->get('collections/'. $slug .'/products');
+
+    return response($result->getDecodedBody());
+})->middleware('shopify.auth');
+
 Route::get('/api/collections', function (Request $request) {
     $session = $request->get('shopifySession');
 

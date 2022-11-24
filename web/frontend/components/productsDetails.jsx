@@ -224,7 +224,7 @@ const ProductsDetails = () => {
 
     const addImage = async () => {
         if (imageUrl !== '') {
-            
+
             handleImageModel()
             let data = { gid, imageUrl };
             const sessionToken = await getSessionToken(app);
@@ -355,122 +355,124 @@ const ProductsDetails = () => {
                             {model}
                             <Title name="Product Details" />
                             <div style={{ height: '250px', width: '100%' }}>
-                                {fullscreenBarMarkup}
-                                <div style={{ padding: '1.5rem 70px' }}>
-                                    <Stack>
-                                        <Stack.Item fill>
-                                            <Card sectioned>
-                                                <Stack vertical>
-                                                    <TextField
-                                                        value={title}
-                                                        onChange={handleTitleChange}
-                                                        label="Title"
-                                                        type="title"
-                                                        autoComplete="off"
-                                                    />
-                                                    <TextField
-                                                        value={description}
-                                                        onChange={handleDescriptionChange}
-                                                        multiline={4}
-                                                        label="Description"
-                                                        type="description"
-                                                        autoComplete="off"
-                                                    />
-                                                </Stack>
-                                            </Card>
-                                            <Card sectioned title="Media">
-                                                <Stack vertical alignment="center">
-                                                    <Button onClick={handleImageModel}>Insert Image</Button>
+                                <div style={{ padding: '0 150px' }}>
+                                    {fullscreenBarMarkup}
+                                    <div style={{ padding: '1.5rem 0' }}>
+                                        <Stack>
+                                            <Stack.Item fill>
+                                                <Card sectioned>
                                                     <Stack vertical>
-                                                        {
-                                                            images.map((image) => {
-                                                                return (
-                                                                    <img src={image.node.url} alt="random" width={"300px"} height={"250px"} style={{ objectfit: "contain" }}/>
-                                                                );
-                                                            })
-                                                        }
+                                                        <TextField
+                                                            value={title}
+                                                            onChange={handleTitleChange}
+                                                            label="Title"
+                                                            type="title"
+                                                            autoComplete="off"
+                                                        />
+                                                        <TextField
+                                                            value={description}
+                                                            onChange={handleDescriptionChange}
+                                                            multiline={4}
+                                                            label="Description"
+                                                            type="description"
+                                                            autoComplete="off"
+                                                        />
                                                     </Stack>
-                                                </Stack>
-                                            </Card>
-                                            <Card title="Pricing" sectioned>
-                                                <Stack vertical>
-                                                    <TextField
-                                                        value={price}
-                                                        onChange={handlePriceChange}
-                                                        label="Price"
-                                                        type="price"
-                                                        placeholder="0.00"
-                                                        autoComplete="off"
-                                                        prefix="NPR"
+                                                </Card>
+                                                <Card sectioned title="Media">
+                                                    <Stack vertical alignment="center">
+                                                        <Button onClick={handleImageModel}>Insert Image</Button>
+                                                        <Stack vertical>
+                                                            {
+                                                                images.map((image) => {
+                                                                    return (
+                                                                        <img src={image.node.url} alt="random" width={"150px"} height={"130px"} />
+                                                                    );
+                                                                })
+                                                            }
+                                                        </Stack>
+                                                    </Stack>
+                                                </Card>
+                                                <Card title="Pricing" sectioned>
+                                                    <Stack vertical>
+                                                        <TextField
+                                                            value={price}
+                                                            onChange={handlePriceChange}
+                                                            label="Price"
+                                                            type="price"
+                                                            placeholder="0.00"
+                                                            autoComplete="off"
+                                                            prefix="NPR"
+                                                        />
+                                                        <TextField
+                                                            value={compareAtPrice}
+                                                            onChange={handleCompareAtPrice}
+                                                            label="Compare at price"
+                                                            type="price"
+                                                            autoComplete="off"
+                                                            placeholder="0.00"
+                                                            prefix="NPR"
+                                                        />
+                                                        <Checkbox
+                                                            label="Charge tax on this product"
+                                                            checked={checkedChargeTax}
+                                                            onChange={handleCheckedChargeTax}
+                                                        />
+                                                    </Stack>
+                                                </Card>
+                                                <Card title="Inventory" actions={[{ content: 'Adjustment history' }]} sectioned>
+                                                    <Stack distribution="fill">
+                                                        <TextField
+                                                            value={stockUnit}
+                                                            onChange={handleStockUnit}
+                                                            label="SKU (Stock Keeping Unit)"
+                                                            type="sku"
+                                                            autoComplete="off"
+                                                        />
+                                                        <TextField
+                                                            value={barCode}
+                                                            onChange={handleBarCode}
+                                                            label="Barcode (ISBN, UPC, GTIN, etc.)"
+                                                            type="barcode"
+                                                            autoComplete="off"
+                                                        />
+                                                    </Stack>
+                                                </Card>
+                                            </Stack.Item>
+                                            <Stack.Item fill>
+                                                <Card sectioned>
+                                                    <Select
+                                                        label="Product Status"
+                                                        options={options}
+                                                        onChange={handleSelectChange}
+                                                        value={selected}
                                                     />
-                                                    <TextField
-                                                        value={compareAtPrice}
-                                                        onChange={handleCompareAtPrice}
-                                                        label="Compare at price"
-                                                        type="price"
-                                                        autoComplete="off"
-                                                        placeholder="0.00"
-                                                        prefix="NPR"
-                                                    />
-                                                    <Checkbox
-                                                        label="Charge tax on this product"
-                                                        checked={checkedChargeTax}
-                                                        onChange={handleCheckedChargeTax}
-                                                    />
-                                                </Stack>
-                                            </Card>
-                                            <Card title="Inventory" actions={[{ content: 'Adjustment history' }]} sectioned>
-                                                <Stack distribution="fill">
-                                                    <TextField
-                                                        value={stockUnit}
-                                                        onChange={handleStockUnit}
-                                                        label="SKU (Stock Keeping Unit)"
-                                                        type="sku"
-                                                        autoComplete="off"
-                                                    />
-                                                    <TextField
-                                                        value={barCode}
-                                                        onChange={handleBarCode}
-                                                        label="Barcode (ISBN, UPC, GTIN, etc.)"
-                                                        type="barcode"
-                                                        autoComplete="off"
-                                                    />
-                                                </Stack>
-                                            </Card>
-                                        </Stack.Item>
-                                        <div>
-                                            <Card sectioned>
-                                                <Select
-                                                    label="Product Status"
-                                                    options={options}
-                                                    onChange={handleSelectChange}
-                                                    value={selected}
-                                                />
-                                            </Card>
-                                            <Card title="Insights" sectioned>
-                                                <p>Insights will display when the product<br></br> has had recent sales</p>
-                                            </Card>
-                                            <Card title="Product organization" sectioned>
-                                                <Stack vertical>
-                                                    <TextField
-                                                        value={productType}
-                                                        onChange={handleProductTypeChange}
-                                                        label="Product Type"
-                                                        type="productType"
-                                                        autoComplete="off"
-                                                    />
-                                                    <TextField
-                                                        value={vendor}
-                                                        onChange={handleVendorChange}
-                                                        label="Vendor"
-                                                        type="vendor"
-                                                        autoComplete="off"
-                                                    />
-                                                    <Button onClick={handleChangeShowCollection}>Set Collection</Button>
-                                                </Stack>
-                                            </Card>
-                                        </div>
-                                    </Stack>
+                                                </Card>
+                                                <Card title="Insights" sectioned>
+                                                    <p>Insights will display when the product<br></br> has had recent sales</p>
+                                                </Card>
+                                                <Card title="Product organization" sectioned>
+                                                    <Stack vertical>
+                                                        <TextField
+                                                            value={productType}
+                                                            onChange={handleProductTypeChange}
+                                                            label="Product Type"
+                                                            type="productType"
+                                                            autoComplete="off"
+                                                        />
+                                                        <TextField
+                                                            value={vendor}
+                                                            onChange={handleVendorChange}
+                                                            label="Vendor"
+                                                            type="vendor"
+                                                            autoComplete="off"
+                                                        />
+                                                        <Button onClick={handleChangeShowCollection}>Set Collection</Button>
+                                                    </Stack>
+                                                </Card>
+                                            </Stack.Item>
+                                        </Stack>
+                                    </div>
                                 </div>
                             </div>
                         </Frame>
