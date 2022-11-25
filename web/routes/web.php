@@ -176,7 +176,7 @@ Route::get('/api/getProductCollection/{slug}', function ($slug, Request $request
     $session = $request->get('shopifySession');
 
     $client = new Rest($session->getShop(), $session->getAccessToken());
-    $result = $client->get('collections/'. $slug .'/products');
+    $result = $client->get('collections/' . $slug . '/products');
 
     return response($result->getDecodedBody());
 })->middleware('shopify.auth');
@@ -479,6 +479,49 @@ Route::post('/api/addImage', function (Request $request) {
                             "src" => $request->imageUrl
                         ]
                     ]
+                ]
+            ]
+        ],
+    );
+
+    return response($products->getBody());
+})->middleware('shopify.auth');
+
+Route::get('/api/setLocations', function (Request $request) {
+
+    $session = $request->get('shopifySession');
+
+    $queryString = <<<'QUERY'
+    mutation locationAdd($input: LocationAddInput!) {
+        locationAdd(input: $input) {
+            location {
+                address{
+                address1
+                city
+                country
+                countryCode
+                }
+            }
+        }
+    }
+    QUERY;
+
+    $client = new Graphql($session->getShop(), $session->getAccessToken());
+
+    $products = $client->query(
+        [
+            "query" => $queryString,
+            "variables" => [
+                "input" => [
+                    "address" => [
+                        "address1" => "Radhe Radhe",
+                        "address2" => "Radhe Radhe",
+                        "city" => "Bhaktapur",
+                        "countryCode" => "NP",
+                        "phone" => "9818354005",
+                    ],
+                    "name" => "Hello",
+                    "fulfillsOnlineOrders" => true,
                 ]
             ]
         ],
